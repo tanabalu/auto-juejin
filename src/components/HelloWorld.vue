@@ -112,10 +112,7 @@ export default {
                 return;
             }
 
-            if (
-                this.currentSweepTime >= this.maxSweepTimes
-                || this.isStopRun
-            ) {
+            if (this.currentSweepTime >= this.maxSweepTimes || this.isStopRun) {
                 // 如果循环次数超限
                 return;
             }
@@ -138,7 +135,7 @@ export default {
         },
         // 增加打印日志
         logger() {
-        
+            
         },
         // 清空当前日志
         clearLog() {
