@@ -38,28 +38,29 @@
 </template>
 
 <script lang="ts">
-interface State {
+import { ElMessage } from 'element-plus'
+import {postCommand} from '../service';
+// import API from '../service/api';
+// import {get, post} from '../service';
+// interface State {
 
-}
+// }
 
-enum LoggerType {
-  // 游戏开始
-  // 游戏进度
-  // 游戏卡顿了哦，开始探路
-  // 探路中提示
+// enum LoggerType {
+//   // 游戏开始
+//   // 游戏进度
+//   // 游戏卡顿了哦，开始探路
+//   // 探路中提示
 
-  // 路径到达上限提示
+//   // 路径到达上限提示
 
-  // 手动停止前进提示
+//   // 手动停止前进提示
 
-  // 接口请求错误
-}
+//   // 接口请求错误
+// }
 
 export default {
     name: "HelloWorld",
-    props: {
-        msg: String,
-    },
     data() {
         return {
             // 总共执行冲刺方案次数
@@ -87,7 +88,7 @@ export default {
             // 是否停止执行
             isStopRun: false,
             // 当前位置
-            postion: {
+            position: {
                 x: 0,
                 y: 0,
             },
@@ -105,6 +106,23 @@ export default {
 
             this.go();
         },
+        // 检验是否
+        checkIntegrity(): boolean {
+            // return false;
+            if (!this.uid) {
+                this.warnMessage('请输入用户ID');
+                return false;
+            }
+            if (!this.authorization) {
+                this.warnMessage('请输入用户身份校验码');
+                return false;
+            }
+            if (!this.gameId) {
+                this.warnMessage('请输入游戏ID');
+                return false;
+            }
+            return true;
+        },
         // 下行扫楼
         go() {
             if (this.position.y >= this.maxDeep) {
@@ -117,14 +135,18 @@ export default {
                 return;
             }
 
+            this.isLoading = true;
 
-            // this.isLoading = true;
-
-
-        },
-        // 检验是否
-        checkIntegrity(): boolean {
-
+            postCommand({
+                uid: this.uid,
+                gameId: this.gameId,
+                authorization: this.authorization,
+                // TODO:
+                command: [],
+            }).then(res => {
+                this.isLoading = false;
+                console.log(res);
+            });
         },
         // 上行扫楼
         back() {
@@ -132,6 +154,13 @@ export default {
                 // 全局结束
                 return;
             }
+        },
+        // 警告提示
+        warnMessage(message: string) {
+            ElMessage({
+                message,
+                type: 'warning',
+            });
         },
         // 增加打印日志
         logger() {

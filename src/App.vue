@@ -1,14 +1,14 @@
 <template>
-	<HelloWorld />
+	<Juejin />
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Juejin from "./components/Juejin.vue";
 
 export default {
 	name: "App",
 	components: {
-		HelloWorld,
+		Juejin,
 	},
 };
 </script>
